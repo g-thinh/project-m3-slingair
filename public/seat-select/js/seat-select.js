@@ -2,8 +2,10 @@ const flightInput = document.getElementById('flight');
 const flightName = document.getElementById('flight-name');
 const seatsDiv = document.getElementById('seats-section');
 const confirmButton = document.getElementById('confirm-button');
+const seatSelected = document.getElementById("chosenSeat");
 
-let selection = '';
+
+let selection = undefined;
 
 const renderSeats = (data) => {
   
@@ -40,6 +42,9 @@ const renderSeats = (data) => {
   seatMap.forEach((seat) => {
     seat.onclick = () => {
       selection = seat.value;
+
+      seatSelected.value = selection;
+
       seatMap.forEach((x) => {
         if (x.value !== seat.value) {
           document.getElementById(x.value).classList.remove('selected');
@@ -75,16 +80,32 @@ const toggleFormContent = flightInput.onchange = (event) => {
 const handleConfirmSeat = (event) => {
   event.preventDefault();
   // TODO: everything in here!
-  fetch('/users', {
-    method: 'POST',
-    body: JSON.stringify({
-      givenName: document.getElementById('givenName').value,
-    }),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
+  console.log(seatSelected.value, selection);
+  if(selection == undefined) {
+    window.alert("you forgot to pick a seat");
+  } else {
+    fetch('/users', {
+      method: 'POST',
+      body: JSON.stringify({
+        flight: flightInput.value,
+        seat: selection,
+        givenName: document.getElementById('givenName').value,
+        surname: document.getElementById('surname').value,
+        email: document.getElementById('email').value,
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then(res => {
+      console.log(res);
+      if(res.status === 200) {
+        window.location = '/seat-select/confirmed';
+      }
+    }).catch(err => {alert(err)});
+  }
+
+
 };
 
 flightInput.addEventListener('blur', toggleFormContent);

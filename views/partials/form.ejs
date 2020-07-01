@@ -1,10 +1,14 @@
 <div class="form-container">
   <h2 id="flight-name">Select your seat and Provide your information!</h2>
-  <form id="seats" class="content" name="salesForm" onsubmit="handleConfirmSeat(event)">
+  <form id="seats" class="content" name="salesForm" onsubmit="handleConfirmSeat(event)" method="POST">
       <div class='form-content plane'>
           <div id="seats-section"></div>
       </div>
       <div class="form-content user">
+        <div class='form-item'>
+          <label for="seat">Flight Seat #</label>
+          <input id="chosenSeat" type="text" name="chosenSeat" placeholder="Please Choose Seat" readonly required />
+        </div>
           <div class='form-item'>
               <label for="givenName">First Name</label>
               <input id="givenName" type="text" name="givenName" placeholder="Your first name" required />
