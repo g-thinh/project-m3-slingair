@@ -5,9 +5,9 @@ const confirmButton = document.getElementById('confirm-button');
 
 let selection = '';
 
-const renderSeats = () => {
+const renderSeats = (data) => {
+  
   document.querySelector('.form-container').style.display = 'block';
-
   const alpha = ['A', 'B', 'C', 'D', 'E', 'F'];
   for (let r = 1; r < 11; r++) {
     const row = document.createElement('ol');
@@ -23,7 +23,15 @@ const renderSeats = () => {
       const seatAvailable = `<li><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
 
       // TODO: render the seat availability based on the data...
-      seat.innerHTML = seatAvailable;
+      let seatData = data.find(item => item.id == seatNumber);
+      if(seatData.isAvailable) {
+        seat.innerHTML = seatAvailable;
+      } else {
+        seat.innerHTML = seatOccupied;
+      }
+      //console.log(seat.id, seat.isAvailable, seatNumber);
+      //console.log(seatNumber, seatData);
+      
       row.appendChild(seat);
     }
   }
@@ -47,18 +55,21 @@ const renderSeats = () => {
 const toggleFormContent = flightInput.onchange = (event) => {
   const flightNumber = flightInput.value;
   flightName.innerHTML = `Select your Seat for flight ${flightNumber} and Provide your information`;
-  console.log('toggleFormContent: ', flightNumber);
+  //console.log('toggleFormContent: ', flightNumber);
   fetch(`/flights/${flightNumber}`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
-    });
-  // TODO: contact the server to get the seating availability
-  //      - only contact the server if the flight number is this format 'SA###'.
-  //      - Do I need to create an error message if the number is not valid?
+      // TODO: contact the server to get the seating availability
+      //      - only contact the server if the flight number is this format 'SA###'.
+      //      - Do I need to create an error message if the number is not valid?
 
-  // TODO: Pass the response data to renderSeats to create the appropriate seat-type.
-  renderSeats();
+      // TODO: Pass the response data to renderSeats to create the appropriate seat-type.
+      
+      //destroy previous rendering of seats before passing new data to render seats
+      document.getElementById("seats-section").innerHTML = '';
+      renderSeats(data);
+    });
+
 };
 
 const handleConfirmSeat = (event) => {
