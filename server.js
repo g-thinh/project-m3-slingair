@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 //import route handling functions
-const { handleFlight, handleSeats } = require("./handlers");
+const { handleFlight, handleSeats, handleUsers } = require("./handlers");
 
 const PORT = process.env.PORT || 8000;
 
@@ -28,6 +28,8 @@ express()
   .get("/seat-select", handleSeats)
 
   .get("/flights/:flightNumber", handleFlight)
+
+  .post("/users", handleUsers)
 
   .use("*", (req, res) => res.send("Not Found"))
 

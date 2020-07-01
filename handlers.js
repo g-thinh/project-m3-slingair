@@ -1,4 +1,6 @@
 const { flights } = require("./test-data/flightSeating");
+const { reservations } = require("./test-data/reservations");
+const { v4: uuidv4 } = require('uuid');
 
 //this function will return all of the flight's seating data
 //if the flight exists
@@ -29,7 +31,28 @@ const handleSeats = (req, res) => {
   });
 };
 
+const handleUsers = (req,res) => {
+  //This will update the reservations
+  let info = req.body;
+  //console.log(info);
+  let newId = {id: uuidv4()};
+  //console.log("this user now has confirmation id:", newId);
+  let newData = {...newId, ...info}
+  //console.log(newData);
+  reservations.push(newData);
+  //console.log(reservations);
+
+  //time to udpate the flight availabilities
+  flights[info.flight].find(seat => seat.id === info.seat)
+    .isAvailable = false;
+  //console.log(newSeat);
+  console.log(flights[info.flight]);
+
+  res.status(200).send({status: 200});
+}
+
 module.exports = {
   handleFlight: handleFlight,
   handleSeats: handleSeats,
+  handleUsers: handleUsers,
 };
