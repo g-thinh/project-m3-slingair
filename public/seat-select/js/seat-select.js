@@ -1,4 +1,5 @@
 const flightInput = document.getElementById('flight');
+const flightName = document.getElementById('flight-name');
 const seatsDiv = document.getElementById('seats-section');
 const confirmButton = document.getElementById('confirm-button');
 
@@ -43,8 +44,9 @@ const renderSeats = () => {
   });
 };
 
-const toggleFormContent = (event) => {
+const toggleFormContent = flightInput.onchange = (event) => {
   const flightNumber = flightInput.value;
+  flightName.innerHTML = `Select your Seat for flight ${flightNumber} and Provide your information`;
   console.log('toggleFormContent: ', flightNumber);
   fetch(`/flights/${flightNumber}`)
     .then((res) => res.json())
