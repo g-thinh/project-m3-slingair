@@ -74,8 +74,7 @@ const toggleFormContent = flightInput.onchange = (event) => {
       document.getElementById("seats-section").innerHTML = '';
       renderSeats(data);
     });
-
-};
+  };
 
 const handleConfirmSeat = (event) => {
   event.preventDefault();
@@ -98,9 +97,17 @@ const handleConfirmSeat = (event) => {
         'Content-Type': 'application/json',
       },
     }).then(res => {
-      console.log(res);
+      //console.log(res);
       if(res.status === 200) {
-        window.location = '/seat-select/confirmed';
+        fetch('/users', {method:'GET'})
+        .then(res=> res.json())
+        .then(data => {
+          let redirectName = data.find(item => item.givenName ==document.getElementById('givenName').value)
+          console.log(redirectName.id);
+          window.location = `/seat-select/confirmed/${redirectName.id}`;
+        })
+        .catch(err => {alert(err)});
+        
       }
     }).catch(err => {alert(err)});
   }
