@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 //import route handling functions
-const { handleFlight, handleSeats, handleUsers, handleConfirmation, SendUsersInfo } = require("./handlers");
+const { handleFlight, handleSeats, handleUsers, handleConfirmation, SendUsersInfo, handleReservations } = require("./handlers");
 
 const PORT = process.env.PORT || 8000;
 
@@ -25,12 +25,17 @@ express()
   .set("view engine", "ejs")
 
   // endpoints
+  //choose a seat
   .get("/seat-select", handleSeats)
 
   //sends user to confirmation page
   .get("/seat-select/confirmed/:id", handleConfirmation)
 
+  //get the flights
   .get("/flights/:flightNumber", handleFlight)
+
+  //search for a reservation
+  .get("/view-reservation", handleReservations)
 
   //receives form data
   .post("/users", handleUsers)

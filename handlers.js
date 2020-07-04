@@ -69,10 +69,17 @@ const SendUsersInfo = (req,res) => {
   res.status(200).send(reservations);
 }
 
+const handleReservations = (req,res) => {
+  res.status(200).render('./pages/view-reservation', {
+    pageTitle: 'View reservations',
+  })
+}
+
 module.exports = {
   handleFlight: handleFlight,
   handleSeats: handleSeats,
   handleUsers: handleUsers,
   handleConfirmation: handleConfirmation,
   SendUsersInfo: SendUsersInfo,
+  handleReservations: handleReservations,
 };

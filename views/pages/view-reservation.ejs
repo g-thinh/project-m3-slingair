@@ -1,0 +1,26 @@
+<%- include("../partials/header") %>
+<div class="content">
+  
+  <form class="form-content reservation" onsubmit="getReservation(event)" method='GET'>
+    <h1>Please Enter your Reservation ID:</h1>
+
+    <div class="res-form">
+      <label>ID#</label>
+      <input class="" type="text" maxlength="8" placeholder="XXXXXXXX" required>
+      <p>-</p>
+      <input class="" type="text" maxlength="4" placeholder="XXXX" required>
+      <p>-</p>
+      <input class="" type="text" maxlength="4" placeholder="XXXX" required>
+      <p>-</p>
+      <input class="" type="text" maxlength="4" placeholder="XXXX" required>
+      <p>-</p>
+      <input class="" type="text" maxlength="12" placeholder="XXXXXXXX" required>
+    </div>
+    <button class="button confirm" type="submit">Search</button>
+  </form>
+</div>
+</div>
+<p class='footer-logo'>The only way to fly!</p>
+<script src="./seat-select/js/view-reservation.js"></script>
+</body>
+</html>
