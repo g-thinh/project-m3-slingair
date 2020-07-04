@@ -28,8 +28,22 @@ const handleSeats = (req, res) => {
 
   res.status(200).render("./pages/seat-select", {
     flights: flightNames,
+    pageTitle: 'Seat Selection'
   });
 };
+
+//this handle confirmation pages needs to get the user flight id
+const handleConfirmation = (req,res) => {
+  let userId = req.params.id;
+
+  let userInfo = reservations.find(user => user.id === userId);
+
+  console.log(userInfo);
+  res.status(200).render("./pages/confirmed", {
+    pageTitle: "Confirm Reservation",
+    user: userInfo,
+  })
+}
 
 const handleUsers = (req,res) => {
   //This will update the reservations
@@ -46,13 +60,19 @@ const handleUsers = (req,res) => {
   flights[info.flight].find(seat => seat.id === info.seat)
     .isAvailable = false;
   //console.log(newSeat);
-  console.log(flights[info.flight]);
+  //console.log(flights[info.flight]);
+  let body = {status: 200, flightId: newId}
+  res.status(200).send(body);
+}
 
-  res.status(200).send({status: 200});
+const SendUsersInfo = (req,res) => {
+  res.status(200).send(reservations);
 }
 
 module.exports = {
   handleFlight: handleFlight,
   handleSeats: handleSeats,
   handleUsers: handleUsers,
+  handleConfirmation: handleConfirmation,
+  SendUsersInfo: SendUsersInfo,
 };
