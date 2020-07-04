@@ -260,3 +260,66 @@ select {
 }
 
 .form-container { display: none; }
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav a {
+  text-decoration: none;
+  color: inherit;
+  padding: 20px;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+.reservation {
+  border: 3px solid var(--alabama-crimson);
+  border-radius: 5px;
+  margin: 30px 50px;
+  padding: 30px;
+  width: 100%;
+}
+
+.reservation > h1 {
+  padding-bottom: 50px;
+}
+
+.res-form {
+  display: flex;
+  align-items: center;
+}
+
+.res-form p {
+  font-family: var(--heading-font);
+  padding: 5px;
+  color: #fff;
+  font-size: 2rem;
+}
+
+.res-form label {
+  padding-right: 20px;
+}
+
+.res-form input {
+  border-radius: 3px;
+  border: 1px solid #e4e8eb;
+  box-sizing: border-box;
+  color: #464a5c;
+  font-size: 16px;
+  font-weight: 300;
+  height: 44px;
+  padding: 8px 12px 10px 12px;
+  width: 100px;
+}
+
+.res-form input::placeholder {
+  color: #999;
+}
+
+.reservation button {
+  margin-top: 50px;
+}
