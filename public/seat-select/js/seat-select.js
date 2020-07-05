@@ -76,43 +76,45 @@ const toggleFormContent = flightInput.onchange = (event) => {
     });
   };
 
+const getData = async () => {
+  return await fetch('/users', {method: 'GET'})
+}
+
+const postData = async () => {
+  return await fetch('/users', {
+    method: 'POST',
+    body: JSON.stringify({
+      flight: flightInput.value,
+      seat: selection,
+      givenName: document.getElementById('givenName').value,
+      surname: document.getElementById('surname').value,
+      email: document.getElementById('email').value,
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
 const handleConfirmSeat = (event) => {
   event.preventDefault();
   // TODO: everything in here!
-  console.log(seatSelected.value, selection);
+  //console.log(seatSelected.value, selection);
   if(selection == undefined) {
     window.alert("you forgot to pick a seat");
   } else {
-    fetch('/users', {
-      method: 'POST',
-      body: JSON.stringify({
-        flight: flightInput.value,
-        seat: selection,
-        givenName: document.getElementById('givenName').value,
-        surname: document.getElementById('surname').value,
-        email: document.getElementById('email').value,
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }).then(res => {
-      //console.log(res);
-      if(res.status === 200) {
-        fetch('/users', {method:'GET'})
-        .then(res=> res.json())
-        .then(data => {
-          let redirectName = data.find(item => item.givenName ==document.getElementById('givenName').value)
-          console.log(redirectName.id);
-          window.location = `/seat-select/confirmed/${redirectName.id}`;
-        })
-        .catch(err => {alert(err)});
-        
-      }
-    }).catch(err => {alert(err)});
+    postData();
+    getData()
+    .then(res=> res.json())
+    .then(data => {
+      let redirectName = data.find(item => item.givenName ==document.getElementById('givenName').value)
+      //console.log(redirectName.id);
+      window.location = `/seat-select/confirmed/${redirectName.id}`;
+    })
+    .catch(err => {alert(err)});
+
   }
-
-
 };
 
 flightInput.addEventListener('blur', toggleFormContent);
