@@ -75,6 +75,14 @@ const handleReservations = (req,res) => {
   })
 }
 
+const viewReservations = (req,res) => {
+  res.status(200).render('./pages/admin', {
+    pageTitle: 'Admin',
+    flightNames: Object.keys(flights),
+    flights: flights,
+  })
+}
+
 module.exports = {
   handleFlight: handleFlight,
   handleSeats: handleSeats,
@@ -82,4 +90,5 @@ module.exports = {
   handleConfirmation: handleConfirmation,
   SendUsersInfo: SendUsersInfo,
   handleReservations: handleReservations,
+  viewReservations: viewReservations,
 };
