@@ -1,0 +1,25 @@
+<%- include("../partials/header") %>
+<div class="flight-select">
+  <label for="flight">Flight Number :</label>
+  <!-- <input name="flight" id="flight" type="text" placeholder="flight #" /> -->
+  <select name="flight" id="flight" class="flight">
+    <option disabled selected>Please Choose a Flight</option>
+    <% flightNames.forEach(flight => { %>
+      <option> <%= flight %> </option>
+    <% }) %>
+  </select>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>Seat</th>
+      <th>Availibity</th>
+      <th>Reserved By</th>
+    </tr>
+  </thead>
+  <tbody id="table-content">
+  </tbody>
+</table>
+<script src="/seat-select/js/admin.js"></script>
+</body>
+</html>
