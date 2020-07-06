@@ -14,7 +14,7 @@ const getReservation = (event) => {
   .then(res => res.json())
   .then(data => {
     console.log(data);
-    debugger;
+    // debugger;
     data.forEach(res => console.log(res));
     //let reservations = Object.keys(data);
     //console.log(reservations);
@@ -24,7 +24,8 @@ const getReservation = (event) => {
     if(res) {
       window.location = `/seat-select/confirmed/${res.id}`;
     } else {
-      window.alert("The Reservation ID you entered does not exist!");
+      document.getElementById('warning').style.display = 'block';
+      //window.alert("The Reservation ID you entered does not exist!");
     }
   })
   .catch(err => console.log(err));
