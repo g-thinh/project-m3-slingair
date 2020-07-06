@@ -6,13 +6,13 @@ const morgan = require("morgan");
 
 //import route handling functions
 const { 
-  handleFlight,
+  getFlights,
   handleSeats,
-  handleUsers,
+  addReservation,
   handleConfirmation,
-  SendUsersInfo,
+  getReservations,
   handleReservations,
-  viewReservations 
+  adminView 
 } = require("./handlers");
 
 const PORT = process.env.PORT || 8000;
@@ -33,25 +33,26 @@ express()
   .set("view engine", "ejs")
 
   // endpoints
-  //choose a seat
+  //renders seat-selection
   .get("/seat-select", handleSeats)
 
   //sends user to confirmation page
   .get("/seat-select/confirmed/:id", handleConfirmation)
 
-  //get the flights
-  .get("/flights/:flightNumber", handleFlight)
+  //get the flights #
+  .get("/flights/:flightNumber", getFlights)
 
   //search for a reservation
   .get("/view-reservation", handleReservations)
 
-  //receives form data
-  .post("/users", handleUsers)
+  //receives form data and adds it to reservations
+  .post("/users", addReservation)
 
   //retrieves all reservations, including updated form data
-  .get("/users", SendUsersInfo)
+  .get("/users", getReservations)
 
-  .get("/admin", viewReservations)
+  //admin view of all reservations
+  .get("/admin", adminView)
 
   .use("*", (req, res) => res.send("Not Found"))
 
