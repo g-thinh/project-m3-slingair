@@ -12,20 +12,6 @@ const getReservations = async(flightNum) => {
   return await fetch('/users', {method: 'GET'});
 }
 
-//This function will render table rows for flights without any reservations
-//because in the reservation data, there is only 1 reservation with a valid name
-//I was not able to render my admin table properly for occupied seats
-const renderRows = (seat) => {
-  let tableRow = document.createElement('tr');
-  let seatOccupied = `<tr><td>${seat.id}</td><td>${seat.isAvailable}</td><td>No Name Given</td></tr>`
-  let seatUnavailable = `<tr><td>${seat.id}</td><td>${seat.isAvailable}</td><td>${seat.isAvailable ? "-" : "No Name Given" }</td></tr>`
-  if(seat.isAvailable) {
-    tableRow.innerHTML = seatUnavailable;
-  } else {
-    tableRow.innerHTML = seatOccupied;
-  }
-  table.appendChild(tableRow);
-}
 
 //This function will fire whenever the user selects a flight from the dropdown
 //select
@@ -53,40 +39,32 @@ const displayTable = (event) => {
     table.innerHTML ='';
 
     //loop over every single seating object for the current flight
-    //to create the appropriate rows
+    //to create the appropriate table rows
     seats.forEach(seat => {
 
       //this will create the initial row element required
       let tableRow = document.createElement('tr');
 
-      //this is to check if there are any entered reservations, since seats are
-      //occupied even though there arent any reservations under it
-      //I want to render the table with the name of the person that reserved if
-      //if the seat is occupied but not reserved under any name, leave it blank
-      if(reservations.length > 0) {
+      //if the seat is has a reservation, we want to be able to display and link
+      //that person's confirmation page
+      if(!seat.isAvailable) {
 
-        //loop over the reservation array at every seat
-        reservations.forEach(res => {
-          
-          //This injects HTML into the <tr> element that was created for each row
-          let seatOccupied = `<tr><td>${seat.id}</td><td>${seat.isAvailable}</td><td><a href="/seat-select/confirmed/${res.id}">${res.givenName + " " + res.surname}</a></td></tr>`
-          let seatUnavailable = `<tr><td>${seat.id}</td><td>${seat.isAvailable}</td><td>${seat.isAvailable ? "-" : "No Name Given" }</td></tr>`
-          
-          //if the reserved seat matches an occupied seat, then render the
-          //appropirate HTML, note that we also want to create a link to the
-          //users confirmation page if it exists
-          if(res.seat === seat.id) {
-            tableRow.innerHTML = seatOccupied;
-          } else {
-            tableRow.innerHTML = seatUnavailable;
-          }
-        })
-        //finally append the row once the obove is completed
+        //find the user whose reserved seat matches the current seat
+        let user = reservations.find(res => res.seat === seat.id);
+
+        //this is the HTML that will be inserted, includes an anchor tag link
+        //to the users confirmation page
+        let seatOccupied = `<tr><td>${seat.id}</td><td>NO</td><td><a href="/seat-select/confirmed/${user.id}">${user.givenName + " " + user.surname}</a></td></tr>`;
+
+        //set the HTML and append the row to the table body
+        tableRow.innerHTML = seatOccupied;
         table.appendChild(tableRow);
+        
+      //if the seat is free, then create the row with that info
       } else {
-        //this method was to render FLIGHT SA231, which had no reservations
-        //initially, so the above code would not fire since reservations.length = 0;
-        renderRows(seat);
+        let seatAvailable = `<tr><td>${seat.id}</td><td>YES</td><td> - </td></tr>`;
+        tableRow.innerHTML = seatAvailable;
+        table.appendChild(tableRow);
       }
     })
   })
